@@ -2,14 +2,14 @@ package com.example.Reto1Server.repository;
 
 import java.util.List;
 
-import com.example.Reto1Server.model.Song;
+import com.example.Reto1Server.model.repository.Song;
 
 public interface SongRepositoryInterface {
 
-	List<Song> findAll();
-	Song findbyId(long id);
+	List<Song> getAllSong();
+	Song getSongById(Integer id);
 	int createSong(Song song);
 	int updateSong(Song song);
-	int deleteSong(Long id);
+	int deleteSong(Integer id);
 	List<Song> getAllFavorites(Integer userId);
 }

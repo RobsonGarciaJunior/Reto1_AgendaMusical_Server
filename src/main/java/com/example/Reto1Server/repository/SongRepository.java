@@ -8,13 +8,15 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.Reto1Server.model.Song;
+import com.example.Reto1Server.model.repository.Song;
 @Repository
 public class SongRepository implements SongRepositoryInterface{
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
 	@Override
-	public List<Song> findAll() {
+	public List<Song> getAllSong() {
 		try {
 			return jdbcTemplate.query("SELECT * from songs",
 					BeanPropertyRowMapper.newInstance(Song.class)
@@ -24,7 +26,7 @@ public class SongRepository implements SongRepositoryInterface{
 		}
 	}
 	@Override
-	public Song findbyId(long id) {
+	public Song getSongById(Integer id) {
 		return jdbcTemplate.queryForObject("SELECT * from songs where idSong = ?", BeanPropertyRowMapper.newInstance(Song.class), id);
 	}
 
@@ -41,18 +43,16 @@ public class SongRepository implements SongRepositoryInterface{
 	}
 
 	@Override
-	public int deleteSong(Long id) {
+	public int deleteSong(Integer id) {
 		return jdbcTemplate.update("DELETE FROM songs WHERE idSong = ?", id);
 	}
 	
-	// TODO REVISAR LA SIGUIENTE FUNCION 
 	@Override
-	public List<Song> getAllFavorites(Integer userId) {
+	public List<Song> getAllFavorites(Integer idUser) {
 		try {
-			return jdbcTemplate.query("SELECT f.idUser, f.idSong, s.title, s.author, s.url  \r\n"
-					+ "from favourites f join songs s on f.idSong = s.idSong where f.idUser = ?" + userId,
-					BeanPropertyRowMapper.newInstance(Song.class)
-					);
+			return jdbcTemplate.query("SELECT f.idSong, s.title, s.author, s.url  \r\n"
+					+ "from favorites f join songs s on f.idSong = s.idSong where f.idUser = ?",
+					BeanPropertyRowMapper.newInstance(Song.class), idUser);
 		} catch(IncorrectResultSizeDataAccessException e) {
 		return null;
 		}

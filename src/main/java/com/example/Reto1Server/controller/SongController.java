@@ -1,5 +1,6 @@
 package com.example.Reto1Server.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,40 +15,102 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Reto1Server.model.Song;
-import com.example.Reto1Server.repository.SongRepository;
+import com.example.Reto1Server.model.controller.song.SongGetResponse;
+import com.example.Reto1Server.model.controller.song.SongPostRequest;
+import com.example.Reto1Server.model.controller.song.SongPutRequest;
+import com.example.Reto1Server.model.service.SongDTO;
+import com.example.Reto1Server.service.ISongService;
+
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/songs")
 public class SongController {
+	
 	@Autowired
-	SongRepository songRepository;
-	@GetMapping("/songs")
-	public ResponseEntity<List<Song>> getSongs() {
-		return new ResponseEntity<>(songRepository.findAll(), HttpStatus.ACCEPTED);
+	ISongService songService;
+
+	@GetMapping
+	public ResponseEntity<List<SongGetResponse>> getAllSongs() {
+
+		List<SongDTO> listSongDTO = songService.getAllSongs();
+		List<SongGetResponse> response = new ArrayList<SongGetResponse>(); 
+
+		//Transform every DTO from the list to GetResponse
+		for(SongDTO songDTO: listSongDTO) {
+			response.add(convertFromSongDTOToSongGetResponse(songDTO));
+		}
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	}
-	
-	@GetMapping("/songs/{id}")
-	public ResponseEntity<Song> getSong(@PathVariable("id") long id) {
-		return new ResponseEntity<>(songRepository.findbyId(id), HttpStatus.ACCEPTED);
+
+	@GetMapping("/{id}")
+	public ResponseEntity<SongGetResponse> getSongById(@PathVariable("id") Integer id) {
+		
+		SongDTO songDTO = songService.getSongById(id);
+		SongGetResponse songGetResponse = convertFromSongDTOToSongGetResponse(songDTO);
+
+		return new ResponseEntity<>(songGetResponse, HttpStatus.ACCEPTED);
 	}
-	
-	@PostMapping("/songs")
-	public ResponseEntity<?> createSong(@RequestBody Song song) {
-		songRepository.createSong(song);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+
+	@PostMapping
+	public ResponseEntity<?> createSong(@RequestBody SongPostRequest songPostRequest) {
+
+		SongDTO songDTO = convertFromPostRequestToDTO(songPostRequest);
+
+
+		return new ResponseEntity<>(songService.createSong(songDTO), HttpStatus.CREATED);
 	}
-	
-	@PutMapping("/songs/{id}")
-	public ResponseEntity<?> updateSong(@PathVariable("id") long id, @RequestBody Song song){
-		song.setIdSong((int)id);
-		songRepository.updateSong(song);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateSong(@PathVariable("id") Integer id, @RequestBody SongPutRequest songPutRequest){
+
+		SongDTO songDTO = convertFromPutRequestToDTO(songPutRequest);
+
+		songDTO.setIdSong(id);
+
+		return new ResponseEntity<>(songService.updateSong(songDTO), HttpStatus.NO_CONTENT);
 	}
-	
-	@DeleteMapping("/songs/{id}")
-	public ResponseEntity<?> deleteSong(@PathVariable("id") long id) {
-		songRepository.deleteSong(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteSong(@PathVariable("id") Integer id) {
+
+		return new ResponseEntity<>(songService.deleteSong(id), HttpStatus.NO_CONTENT);
 	}
+
+	//CONVERTS
+	//---------------------------------------
+	private SongGetResponse convertFromSongDTOToSongGetResponse(SongDTO songDTO) {
+
+		SongGetResponse response = new SongGetResponse(
+				songDTO.getIdSong(),
+				songDTO.getTitle(),
+				songDTO.getAuthor(),
+				songDTO.getUrl()
+				);
+
+		return response;
+	}
+
+
+	private SongDTO convertFromPostRequestToDTO(SongPostRequest songPostRequest) {
+
+		SongDTO response = new SongDTO(
+				songPostRequest.getIdSong(),
+				songPostRequest.getTitle(),
+				songPostRequest.getAuthor(),
+				songPostRequest.getUrl()
+				);
+		return response;
+	}
+
+	private SongDTO convertFromPutRequestToDTO(SongPutRequest songPutRequest) {
+
+		SongDTO response = new SongDTO(
+				songPutRequest.getIdSong(),
+				songPutRequest.getTitle(),
+				songPutRequest.getAuthor(),
+				songPutRequest.getUrl()
+				);
+		return response;
+	}
+	//---------------------------------------
 }

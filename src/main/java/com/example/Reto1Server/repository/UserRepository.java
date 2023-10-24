@@ -5,15 +5,16 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.Reto1Server.model.Song;
-import com.example.Reto1Server.model.User;
+import com.example.Reto1Server.model.repository.User;
 
 @Repository
 public class UserRepository implements UserRepositoryInterface{
+
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+
 	@Override
-	public User getById(Integer id) {
+	public User getUserById(Integer id) {
 		return jdbcTemplate.queryForObject("SELECT * from users where idUser = ?", BeanPropertyRowMapper.newInstance(User.class), id);
 	}
 
@@ -35,14 +36,13 @@ public class UserRepository implements UserRepositoryInterface{
 	}
 
 	@Override
-	public int createFavorite(Integer userId, Integer songId) {
-		return jdbcTemplate.update("INSERT INTO favourites (idUser, idSong) VALUES(?, ?)", 
-				new Object[] { userId, songId });
+	public int createFavorite(Integer idUser, Integer idSong) {
+		return jdbcTemplate.update("INSERT INTO favorites (idUser, idSong) VALUES(?, ?)", idUser, idSong);
 	}
 
 	@Override
-	public int deleteFavorite(Integer userId, Integer songId) {
-		return jdbcTemplate.update("DELETE FROM favourites WHERE idUser = ? and idSong = ?", userId, songId);
+	public int deleteFavorite(Integer idUser, Integer idSong) {
+		return jdbcTemplate.update("DELETE FROM favorites WHERE idUser = ? and idSong = ?", idUser, idSong);
 	}
 
 }
