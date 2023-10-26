@@ -23,6 +23,8 @@ import com.example.Reto1Server.model.controller.user.UserPutRequest;
 import com.example.Reto1Server.model.service.SongDTO;
 import com.example.Reto1Server.model.service.UserDTO;
 import com.example.Reto1Server.service.IUserService;
+import com.example.Reto1Server.utils.exception.user.EmailAlreadyRegistered;
+import com.example.Reto1Server.utils.exception.user.UserNotFound;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
@@ -33,41 +35,44 @@ public class UserController {
 	@Autowired
 	IUserService userService;
 
-	@GetMapping("/users/{id}")
-	public ResponseEntity<UserGetResponse> getUserById(@PathVariable("id") Integer id) {
+	@PostMapping("/users/login")
+	public ResponseEntity<UserGetResponse> getUserByEmailAndPassword(@RequestBody UserPostRequest userPostRequest) throws UserNotFound {
 
-		UserGetResponse userGetResponse = convertFromUserDTOToUserGetResponse(userService.getUserById(id));
+		UserDTO userDTOToService = convertFromPostRequestToDTO(userPostRequest);
+		
+		UserDTO userDTOResponse = userService.getUserByEmailAndPassword(userDTOToService);
+		
+		UserGetResponse userGetResponse = convertFromUserDTOToUserGetResponse(userDTOResponse);
 
 		return new ResponseEntity<>(userGetResponse, HttpStatus.ACCEPTED);
 	}
 
-	@PostMapping("/users")
-	public ResponseEntity<?> createUser(@RequestBody UserPostRequest userPostRequest) {
+	@PostMapping("/users/register")
+	public ResponseEntity<?> registerUser(@RequestBody UserPostRequest userPostRequest) throws EmailAlreadyRegistered {
 
 		UserDTO userDTO= convertFromPostRequestToDTO(userPostRequest);
 
-		return new ResponseEntity<>(userService.createUser(userDTO),HttpStatus.CREATED);
+		return new ResponseEntity<>(userService.registerUser(userDTO),HttpStatus.CREATED);
 	}
 
 	@PutMapping("users/{id}")
-	public ResponseEntity<?> updateUser(@PathVariable("id") Integer id, @RequestBody UserPutRequest userPutRequest){
+	public ResponseEntity<?> updateUserPassword(@PathVariable("id") Integer id, @RequestBody UserPutRequest userPutRequest) throws EmailAlreadyRegistered{
 
 		UserDTO userDTO = convertFromPutRequestToDTO(userPutRequest);
 
 		userDTO.setIdUser((int)id);
-		
-		return new ResponseEntity<>(userService.updateUser(userDTO),HttpStatus.NO_CONTENT);
+
+		return new ResponseEntity<>(userService.updateUserPassword(userDTO),HttpStatus.NO_CONTENT);
 	}
 
 	@DeleteMapping("/users/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id) {
-		
+
 		return new ResponseEntity<>(userService.deleteUser(id),HttpStatus.NO_CONTENT);
 	}
 
-	//TODO REALIZAR EL METODO CUANDO ESTE TERMINADO EL APARTADO DE SERVICE
 	@GetMapping("/users/{id}/favorites")
-	public  ResponseEntity<UserGetResponse> getAllFavorites(@PathVariable("id") Integer id) {
+	public  ResponseEntity<UserGetResponse> getAllFavorites(@PathVariable("id") Integer id) throws UserNotFound{
 
 		UserGetResponse userGetResponse = convertFromUserDTOToUserGetResponseWithFavoriteList(userService.getUserWithAllFavorites(id));
 
@@ -77,20 +82,20 @@ public class UserController {
 
 	@PostMapping("/users/favorites")
 	public ResponseEntity<?> createFavorite(@RequestBody ObjectNode objectNode) {
-		
+
 		Integer idUser = objectNode.get("idUser").asInt();
 		Integer idSong = objectNode.get("idSong").asInt();
-		
+
 		return new ResponseEntity<>(userService.createFavorite(idUser, idSong),HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/users/{idUser}/favorites/{idSong}")
 	public ResponseEntity<?> deleteFavorite(@PathVariable("idUser") Integer idUser, @PathVariable("idSong") Integer idSong) {
-		
+
 		return new ResponseEntity<>(userService.deleteFavorite(idUser, idSong),HttpStatus.NO_CONTENT);
 	}
-	
-	
+
+
 	//CONVERTS
 	//---------------------------------------
 	private UserGetResponse convertFromUserDTOToUserGetResponse(UserDTO userDTO) {
