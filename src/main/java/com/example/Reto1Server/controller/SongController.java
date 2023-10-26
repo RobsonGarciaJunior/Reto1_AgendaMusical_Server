@@ -20,12 +20,14 @@ import com.example.Reto1Server.model.controller.song.SongPostRequest;
 import com.example.Reto1Server.model.controller.song.SongPutRequest;
 import com.example.Reto1Server.model.service.SongDTO;
 import com.example.Reto1Server.service.ISongService;
+import com.example.Reto1Server.utils.exception.song.SongNotFound;
+import com.example.Reto1Server.utils.exception.song.UrlAlreadyExists;
 
 
 @RestController
 @RequestMapping("api/songs")
 public class SongController {
-	
+
 	@Autowired
 	ISongService songService;
 
@@ -43,8 +45,8 @@ public class SongController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<SongGetResponse> getSongById(@PathVariable("id") Integer id) {
-		
+	public ResponseEntity<SongGetResponse> getSongById(@PathVariable("id") Integer id) throws SongNotFound{
+
 		SongDTO songDTO = songService.getSongById(id);
 		SongGetResponse songGetResponse = convertFromSongDTOToSongGetResponse(songDTO);
 
@@ -52,7 +54,7 @@ public class SongController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> createSong(@RequestBody SongPostRequest songPostRequest) {
+	public ResponseEntity<?> createSong(@RequestBody SongPostRequest songPostRequest) throws UrlAlreadyExists {
 
 		SongDTO songDTO = convertFromPostRequestToDTO(songPostRequest);
 
@@ -61,7 +63,7 @@ public class SongController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateSong(@PathVariable("id") Integer id, @RequestBody SongPutRequest songPutRequest){
+	public ResponseEntity<?> updateSong(@PathVariable("id") Integer id, @RequestBody SongPutRequest songPutRequest) throws UrlAlreadyExists{
 
 		SongDTO songDTO = convertFromPutRequestToDTO(songPutRequest);
 

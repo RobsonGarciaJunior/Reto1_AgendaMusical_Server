@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service;
 import com.example.Reto1Server.model.repository.Song;
 import com.example.Reto1Server.model.service.SongDTO;
 import com.example.Reto1Server.repository.SongRepositoryInterface;
+import com.example.Reto1Server.utils.exception.song.SongNotFound;
+import com.example.Reto1Server.utils.exception.song.UrlAlreadyExists;
 
 @Service
 public class SongService implements ISongService{
-
-	//TODO SE PUEDE CREAR UNA EXCEPCION PARA CUANDO SE REPITA LA URL ANNADIDA
-	//TODO SE PUEDE PONER UNA EXCEPCION PARA CUANDO LA CANCION NO EXISTA
 	
 	@Autowired
 	SongRepositoryInterface songRepository;
@@ -33,7 +32,7 @@ public class SongService implements ISongService{
 	}
 
 	@Override
-	public SongDTO getSongById(Integer id) {
+	public SongDTO getSongById(Integer id) throws SongNotFound {
 
 		Song song = songRepository.getSongById(id);
 
@@ -41,7 +40,7 @@ public class SongService implements ISongService{
 	}
 
 	@Override
-	public int createSong(SongDTO songDTO) {
+	public int createSong(SongDTO songDTO) throws UrlAlreadyExists {
 
 		Song song = convertFromDTOToDAO(songDTO);
 
@@ -49,7 +48,7 @@ public class SongService implements ISongService{
 	}
 
 	@Override
-	public int updateSong(SongDTO songDTO) {
+	public int updateSong(SongDTO songDTO) throws UrlAlreadyExists {
 
 		Song song = convertFromDTOToDAO(songDTO);
 
@@ -63,7 +62,7 @@ public class SongService implements ISongService{
 	}
 
 	@Override
-	public List<SongDTO> getSongsByIdUser(Integer idUser) {
+	public List<SongDTO> getFavoriteSongsByIdUser(Integer idUser) {
 
 		List<Song> listSong = songRepository.getAllFavorites(idUser);
 		List <SongDTO> response = new ArrayList<SongDTO>();
