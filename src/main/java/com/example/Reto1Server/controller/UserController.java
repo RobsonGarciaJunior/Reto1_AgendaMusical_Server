@@ -55,6 +55,7 @@ public class UserController {
 		return new ResponseEntity<>(userService.registerUser(userDTO),HttpStatus.CREATED);
 	}
 
+	//TODO PASAR LA CONTRASENNA ANTIGUA
 	@PutMapping("users/{id}")
 	public ResponseEntity<?> updateUserPassword(@PathVariable("id") Integer id, @RequestBody UserPutRequest userPutRequest) throws EmailAlreadyRegistered{
 

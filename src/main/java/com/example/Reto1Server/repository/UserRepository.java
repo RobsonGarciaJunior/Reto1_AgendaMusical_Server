@@ -1,5 +1,4 @@
 package com.example.Reto1Server.repository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -47,7 +46,7 @@ public class UserRepository implements UserRepositoryInterface{
 		}
 
 	}
-
+	
 	@Override
 	public int updateUserPassword(User user) throws EmailAlreadyRegistered {
 		try{

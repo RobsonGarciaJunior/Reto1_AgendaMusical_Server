@@ -53,7 +53,6 @@ public class UserService implements IUserService{
 
 		User user = convertFromDTOToDAO(userDTO);
 
-
 		return userRepository.updateUserPassword(user);
 	}
 
