@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class UserGetResponse {
-	
+
 	private int idUser;
 	private String name;
 	private String surname;

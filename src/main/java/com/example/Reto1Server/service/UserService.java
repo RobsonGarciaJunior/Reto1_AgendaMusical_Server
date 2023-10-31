@@ -9,13 +9,12 @@ import com.example.Reto1Server.model.repository.User;
 import com.example.Reto1Server.model.service.SongDTO;
 import com.example.Reto1Server.model.service.UserDTO;
 import com.example.Reto1Server.repository.UserRepositoryInterface;
+import com.example.Reto1Server.utils.exception.user.EmailAlreadyRegistered;
+import com.example.Reto1Server.utils.exception.user.UserNotFound;
 
 @Service
 public class UserService implements IUserService{
 
-	//TODO SE PUEDE CREAR UNA EXCEPCION PARA CUANDO SE REPITA EL EMAIL ANNADIDO
-	//TODO SE PUEDE PONER UNA EXCEPCION PARA CUANDO EL USUARIO NO EXISTA
-	
 	@Autowired
 	UserRepositoryInterface userRepository;
 
@@ -23,37 +22,39 @@ public class UserService implements IUserService{
 	ISongService songService;
 
 	@Override
-	public UserDTO getUserById(Integer id) {
+	public UserDTO getUserByEmailAndPassword(UserDTO userDTO) throws UserNotFound {
+
+		User userToRepository = convertFromDTOToDAO(userDTO);
+
+		User userResponse = userRepository.getUserByEmailAndPassword(userToRepository);
+
+		return convertFromDAOToDTO(userResponse);
+	}
+
+	@Override
+	public UserDTO getUserById(Integer id) throws UserNotFound {
 
 		User user = userRepository.getUserById(id);
 
 		return convertFromDAOToDTO(user);
 	}
-	
-	@Override
-	public UserDTO getUserWithAllFavorites(Integer id) {
-		
-		UserDTO response = getUserById(id);
-		response.setFavoriteList(getAllFavorites(id));
 
-		return response;
-	}
 
 	@Override
-	public int createUser(UserDTO userDTO) {
+	public int registerUser(UserDTO userDTO) throws EmailAlreadyRegistered {
 
 		User user = convertFromDTOToDAO(userDTO);
 
-		return userRepository.createUser(user);
+		return userRepository.registerUser(user);
 	}
 
 	@Override
-	public int updateUser(UserDTO userDTO) {
+	public int updateUserPassword(UserDTO userDTO) throws EmailAlreadyRegistered {
 
 		User user = convertFromDTOToDAO(userDTO);
 
-		
-		return userRepository.updateUser(user);
+
+		return userRepository.updateUserPassword(user);
 	}
 
 	@Override
@@ -63,9 +64,13 @@ public class UserService implements IUserService{
 	}
 
 	@Override
-	public List<SongDTO> getAllFavorites(Integer idUser) {
+	public UserDTO getUserWithAllFavorites(Integer id) throws UserNotFound {
 
-		return songService.getSongsByIdUser(idUser);
+		UserDTO response = getUserById(id);
+		List<SongDTO> allFavoriteSongs = songService.getFavoriteSongsByIdUser(id); 
+		response.setFavoriteList(allFavoriteSongs);
+
+		return response;
 	}
 
 	@Override
@@ -106,6 +111,8 @@ public class UserService implements IUserService{
 		return response;
 	}
 	//---------------------------------------
+
+
 
 
 }
