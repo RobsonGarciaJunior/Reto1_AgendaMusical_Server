@@ -42,11 +42,11 @@ public class UserService implements IUserService{
 	//		return 0;
 	//	}
 
-	@Override
-	public int deleteUser(Integer id) {
-
-		return userRepository.deleteUser(id);
-	}
+	//	@Override
+	//	public int deleteUser(Integer id) {
+	//
+	//		return userRepository.deleteUser(id);
+	//	}
 
 	@Override
 	public UserDTO getUserWithAllFavorites(Integer id) throws UserNotFound {
@@ -84,17 +84,17 @@ public class UserService implements IUserService{
 		return response;
 	}
 
-//	private UserDAO convertFromDTOToDAO(UserDTO userDTO) {
-//
-//		UserDAO response = new UserDAO(
-//				userDTO.getIdUser(),
-//				userDTO.getName(),
-//				userDTO.getSurname(),
-//				userDTO.getEmail(),
-//				userDTO.getPassword()
-//				);
-//		return response;
-//	}
+	//	private UserDAO convertFromDTOToDAO(UserDTO userDTO) {
+	//
+	//		UserDAO response = new UserDAO(
+	//				userDTO.getIdUser(),
+	//				userDTO.getName(),
+	//				userDTO.getSurname(),
+	//				userDTO.getEmail(),
+	//				userDTO.getPassword()
+	//				);
+	//		return response;
+	//	}
 	//---------------------------------------
 
 

@@ -39,11 +39,23 @@ public class AuthRepositoryImpl implements AuthRepository {
 				);
 	}
 
+
+	public String getActualDBPassword(Integer idUser){
+		//No hago un try de la query porque se que el token esta bien
+		return (String)jdbcTemplate.queryForObject("SELECT users.password FROM users WHERE idUser = ?", String.class, idUser);
+
+	}
+
 	@Override
 	public int updateUserPassword(UserDAO user){
 		return jdbcTemplate.update("UPDATE users SET password = ? WHERE idUser = ?", 
 				new Object[] { user.getPassword(), user.getIdUser()});
 
+	}
+
+	@Override
+	public int deleteUser(Integer idUser) {
+		return jdbcTemplate.update("DELETE FROM users WHERE idUser = ?", idUser);
 	}
 
 }

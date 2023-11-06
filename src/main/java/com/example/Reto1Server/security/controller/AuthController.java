@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,9 +19,9 @@ import com.example.Reto1Server.model.service.UserDTO;
 import com.example.Reto1Server.security.configuration.JwtTokenUtil;
 import com.example.Reto1Server.security.model.AuthRequest;
 import com.example.Reto1Server.security.model.AuthResponse;
+import com.example.Reto1Server.security.model.AuthUpdatePassword;
 import com.example.Reto1Server.security.model.UserDAO;
 import com.example.Reto1Server.security.service.AuthService;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import jakarta.validation.Valid;
 
@@ -44,12 +45,12 @@ public class AuthController {
 			// esta es la funcion que va a intentar identificarse, dado el username y la password introducida
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-					); 
+					);
 			// devolvera un objeto de tipo authenticacion de las que de momento nos interesa el "principal". El principal contiene los datos del usuario
 			// por lo que lo convertimos a su modelo real de BD para tener todos sus campos
 			UserDAO user = (UserDAO) authentication.getPrincipal();
 			String accessToken = jwtUtil.generateAccessToken(user);
-			AuthResponse response = new AuthResponse(user.getEmail(), accessToken);
+			AuthResponse response = new AuthResponse(accessToken);
 
 			return ResponseEntity.ok().body(response);
 
@@ -78,13 +79,20 @@ public class AuthController {
 
 	//	TODO ACTUALIZAR CONTRASENNA
 	@PutMapping("users/me")
-	public ResponseEntity<?> updateUserPassword(Authentication authentication, @RequestBody ObjectNode objectNode){
+	public ResponseEntity<?> updateUserPassword(Authentication authentication, @RequestBody AuthUpdatePassword authUpdatePassword){
 
 		UserDAO userDetails = (UserDAO) authentication.getPrincipal();
-		String newPassword = objectNode.get("newPassword").toString();
-		String oldPassword = objectNode.get("oldPassword").toString();
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+		//Obtenemos las contrasennas del cuerpo de la peticion
+		String newPassword = authUpdatePassword.getNewPassword();
+		String oldPassword =  authUpdatePassword.getOldPassword();
+
+		//Ciframos la nueva contrasenna
+		String newPasswordEncrypted = passwordEncoder.encode(newPassword);
+		userDetails.setPassword(newPasswordEncrypted);
 		UserDTO userDTO = convertFromDAOToDTO(userDetails);
-		return new ResponseEntity<>(authService.updateUserPassword(userDTO),HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(authService.updateUserPassword(userDTO, oldPassword),HttpStatus.NO_CONTENT);
 	}
 
 	//CONVERTS
@@ -98,6 +106,14 @@ public class AuthController {
 				userDetails.getPassword()
 				);
 		return response;
+	}
+
+	@DeleteMapping("/users/me")
+	public ResponseEntity<?> deleteUser(Authentication authentication) {
+
+		UserDAO userDetails = (UserDAO) authentication.getPrincipal();
+
+		return new ResponseEntity<>(authService.deleteUser(userDetails.getIdUser()),HttpStatus.NO_CONTENT);
 	}
 
 }

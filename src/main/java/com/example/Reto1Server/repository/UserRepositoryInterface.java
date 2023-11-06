@@ -8,7 +8,7 @@ public interface UserRepositoryInterface {
 	UserDAO getUserById(Integer id) throws UserNotFound;
 //	UserDAO getUserByEmailAndPassword(UserDAO user) throws UserNotFound;
 //	int registerUser(UserDAO user) throws EmailAlreadyRegistered;
-	int deleteUser(Integer id);
+//	int deleteUser(Integer id);
 	int createFavorite(Integer idUser, Integer idSong);
 	int deleteFavorite(Integer idUser, Integer idSong);
 	

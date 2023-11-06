@@ -36,7 +36,9 @@ public class JwtTokenUtil {
 				.setIssuer("ADT_DAM")
 				.setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
-				.claim("userId", user.getIdUser()) // podriamos meter datos custom, u objetos custom. 
+				.claim("userId", user.getIdUser()) 
+				.claim("name", user.getName()) 
+				.claim("surname", user.getSurname())  // podriamos meter datos custom, u objetos custom. 
 				// ojo con meter "user" por que tiene la password en el modelo 
 				// y passwords no queremos enviar ni devolver
 				.signWith(SignatureAlgorithm.HS512, SECRET_KEY)
@@ -71,11 +73,11 @@ public class JwtTokenUtil {
 	}	
 	//HE CAMBIDO AQUI COSAS SE PUEDE?
 	public String getName(String token) {
-		return parseClaims(token).get("name").toString();
+		return (String) parseClaims(token).get("name");
 	}
 	
 	public String getSurname(String token) {
-		return parseClaims(token).get("surname").toString();
+		return (String) parseClaims(token).get("surname");
 	}
 	private Claims parseClaims(String token) {
 		return Jwts.parser()

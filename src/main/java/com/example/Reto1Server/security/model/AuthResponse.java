@@ -2,22 +2,12 @@ package com.example.Reto1Server.security.model;
 
 public class AuthResponse {
 	
-	private String email;
 	private String accessToken;
 
 	public AuthResponse() { }
 	
-	public AuthResponse(String email, String accessToken) {
-		this.email = email;
+	public AuthResponse(String accessToken) {
 		this.accessToken = accessToken;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getAccessToken() {

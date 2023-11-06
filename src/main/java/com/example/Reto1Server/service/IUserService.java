@@ -9,7 +9,7 @@ public interface IUserService {
 	UserDTO getUserById(Integer id) throws UserNotFound;
 //	UserDTO getUserByEmailAndPassword(UserDTO userDTO) throws UserNotFound;
 //	int registerUser(UserDTO userDTO) throws EmailAlreadyRegistered;
-	int deleteUser(Integer id);
+//	int deleteUser(Integer id);
 	int createFavorite (Integer idUser, Integer idSong);
 	int deleteFavorite (Integer idUser, Integer idSong);
 	UserDTO getUserWithAllFavorites(Integer id) throws UserNotFound;

@@ -45,11 +45,11 @@ public class UserRepository implements UserRepositoryInterface{
 //
 //	}
 	
-
-	@Override
-	public int deleteUser(Integer id) {
-		return jdbcTemplate.update("DELETE FROM users WHERE idUser = ?", id);
-	}
+//
+//	@Override
+//	public int deleteUser(Integer id) {
+//		return jdbcTemplate.update("DELETE FROM users WHERE idUser = ?", id);
+//	}
 
 	@Override
 	public int createFavorite(Integer idUser, Integer idSong) {
