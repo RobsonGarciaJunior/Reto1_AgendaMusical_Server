@@ -1,0 +1,34 @@
+package com.example.Reto1Server.security.model;
+
+public class AuthUpdatePassword {
+
+	private String oldPassword;
+	private String newPassword;
+	
+	AuthUpdatePassword(String oldPassword, String newPassword) {
+		this.oldPassword = oldPassword;
+		this.newPassword = newPassword;
+	}
+	
+	public String getOldPassword() {
+		return oldPassword;
+	}
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+	public String getNewPassword() {
+		return newPassword;
+	}
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+
+	@Override
+	public String toString() {
+		return "UpdatePassword [oldPassword=" + oldPassword + ", newPassword=" + newPassword + "]";
+	}
+	
+	
+	
+}

@@ -1,17 +1,11 @@
-package com.example.Reto1Server.model.controller.user;
+package com.example.Reto1Server.security.model;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.Reto1Server.model.controller.song.SongGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-public class UserGetResponse implements UserDetails{
+public class UserDAO implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
@@ -19,15 +13,11 @@ public class UserGetResponse implements UserDetails{
 	private String name;
 	private String surname;
 	private String email;
-	//PARA NO MOSTRAR LA CONTRASENNA DEL USUARIO
-	@JsonIgnore
 	private String password;
-	@JsonInclude(Include.NON_NULL)
-	List<SongGetResponse> favoriteList;
 
-	public UserGetResponse() {}
+	public UserDAO() { }
 
-	public UserGetResponse(int idUser, String name, String surname, String email, String password) {
+	public UserDAO(int idUser, String name, String surname, String email, String password) {
 		super();
 		this.idUser = idUser;
 		this.name = name;
@@ -36,14 +26,16 @@ public class UserGetResponse implements UserDetails{
 		this.password = password;
 	}
 
-	public int getIdUser() {
+
+
+	public Integer getIdUser() {
 		return idUser;
 	}
 
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
+	public void setIdUser(Integer id) {
+		this.idUser = id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -60,6 +52,7 @@ public class UserGetResponse implements UserDetails{
 		this.surname = surname;
 	}
 
+
 	public String getEmail() {
 		return email;
 	}
@@ -68,20 +61,13 @@ public class UserGetResponse implements UserDetails{
 		this.email = email;
 	}
 
+	@Override
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public List<SongGetResponse> getFavoriteList() {
-		return favoriteList;
-	}
-
-	public void setFavoriteList(List<SongGetResponse> favoriteList) {
-		this.favoriteList = favoriteList;
 	}
 
 	@Override
@@ -119,5 +105,4 @@ public class UserGetResponse implements UserDetails{
 		// si la cuenta esta activada. Si se tiene en BBDD una columna enabled, usariamos dicha columna
 		return true;
 	}
-
 }

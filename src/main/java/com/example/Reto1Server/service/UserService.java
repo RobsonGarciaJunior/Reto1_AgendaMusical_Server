@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.Reto1Server.model.repository.User;
 import com.example.Reto1Server.model.service.SongDTO;
 import com.example.Reto1Server.model.service.UserDTO;
 import com.example.Reto1Server.repository.UserRepositoryInterface;
-import com.example.Reto1Server.utils.exception.user.EmailAlreadyRegistered;
+import com.example.Reto1Server.security.model.UserDAO;
+import com.example.Reto1Server.utils.exception.user.AlreadyIsAFavorite;
 import com.example.Reto1Server.utils.exception.user.UserNotFound;
 
 @Service
@@ -22,48 +22,6 @@ public class UserService implements IUserService{
 	ISongService songService;
 
 	@Override
-	public UserDTO getUserByEmailAndPassword(UserDTO userDTO) throws UserNotFound {
-
-		User userToRepository = convertFromDTOToDAO(userDTO);
-
-		User userResponse = userRepository.getUserByEmailAndPassword(userToRepository);
-
-		return convertFromDAOToDTO(userResponse);
-	}
-
-	@Override
-	public UserDTO getUserById(Integer id) throws UserNotFound {
-
-		User user = userRepository.getUserById(id);
-
-		return convertFromDAOToDTO(user);
-	}
-
-
-	@Override
-	public int registerUser(UserDTO userDTO) throws EmailAlreadyRegistered {
-
-		User user = convertFromDTOToDAO(userDTO);
-
-		return userRepository.registerUser(user);
-	}
-
-	@Override
-	public int updateUserPassword(UserDTO userDTO) throws EmailAlreadyRegistered {
-
-		User user = convertFromDTOToDAO(userDTO);
-
-
-		return userRepository.updateUserPassword(user);
-	}
-
-	@Override
-	public int deleteUser(Integer id) {
-
-		return userRepository.deleteUser(id);
-	}
-
-	@Override
 	public UserDTO getUserWithAllFavorites(Integer id) throws UserNotFound {
 
 		UserDTO response = getUserById(id);
@@ -72,9 +30,17 @@ public class UserService implements IUserService{
 
 		return response;
 	}
+	
+	@Override
+	public UserDTO getUserById(Integer id) throws UserNotFound {
+
+		UserDAO userDAO = userRepository.getUserById(id);
+
+		return convertFromDAOToDTO(userDAO);
+	}
 
 	@Override
-	public int createFavorite(Integer idUser, Integer idSong) {
+	public int createFavorite(Integer idUser, Integer idSong) throws AlreadyIsAFavorite {
 
 		return userRepository.createFavorite(idUser, idSong);
 	}
@@ -87,30 +53,31 @@ public class UserService implements IUserService{
 
 	//CONVERTS
 	//---------------------------------------
-	private UserDTO convertFromDAOToDTO(User user) {
+	private UserDTO convertFromDAOToDTO(UserDAO userDAO) {
 
 		UserDTO response = new UserDTO(
-				user.getIdUser(),
-				user.getName(),
-				user.getSurname(),
-				user.getEmail(),
-				user.getPassword()
+				userDAO.getIdUser(),
+				userDAO.getName(),
+				userDAO.getSurname(),
+				userDAO.getEmail(),
+				userDAO.getPassword()
 				);
 		return response;
 	}
 
-	private User convertFromDTOToDAO(UserDTO userDTO) {
-
-		User response = new User(
-				userDTO.getIdUser(),
-				userDTO.getName(),
-				userDTO.getSurname(),
-				userDTO.getEmail(),
-				userDTO.getPassword()
-				);
-		return response;
-	}
+	//	private UserDAO convertFromDTOToDAO(UserDTO userDTO) {
+	//
+	//		UserDAO response = new UserDAO(
+	//				userDTO.getIdUser(),
+	//				userDTO.getName(),
+	//				userDTO.getSurname(),
+	//				userDTO.getEmail(),
+	//				userDTO.getPassword()
+	//				);
+	//		return response;
+	//	}
 	//---------------------------------------
+
 
 
 
