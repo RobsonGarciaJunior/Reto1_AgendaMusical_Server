@@ -22,6 +22,7 @@ import com.example.Reto1Server.model.service.SongDTO;
 import com.example.Reto1Server.model.service.UserDTO;
 import com.example.Reto1Server.security.model.UserDAO;
 import com.example.Reto1Server.service.IUserService;
+import com.example.Reto1Server.utils.exception.user.AlreadyIsAFavorite;
 import com.example.Reto1Server.utils.exception.user.UserNotFound;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -32,24 +33,6 @@ public class UserController {
 
 	@Autowired
 	IUserService userService;
-
-//	// utilizamos el /me por que vamos a coger el nuestro, el que estamos logueado...
-//	@GetMapping("/users/me")
-//	public ResponseEntity<?> getUserInfo(Authentication authentication) {
-//		// aqui podemos castearlo a UserDetails o User. El UserDetails es una interfaz, 
-//		// si lo casteamos a la interfaz no podremos sacar campos como la ID del usuario
-//		UserDAO userDetails = (UserDAO) authentication.getPrincipal();
-//		UserGetResponse userGetResponse = convertFromDAOToGetResponse(userDetails);
-//		// IMPORTANTE: por lo tanto, la ID del usuario no tiene que ir como parametro en la peticion del usuario
-//
-//		// aqui podriamos devolver datos del usuario. quizá no sea lo que queremos devolver o no lo querramos devolver
-//		// es un ejemplo por que con userDetails.getId() tendríamos la ID del usuario sin que la pase por parametro
-//		// necesario en algunos servicios: si quiero devolver una lista o elemento privado del usuario, no voy a querer
-//		// que el usuario mande su ID por parametro. Ya que es trampeable.
-//		// de ahi que sea "/me" en el ejemplo 
-//
-//		return ResponseEntity.ok().body(userDetails);
-//	}
 
 	@GetMapping("/users/me/favorites")
 	public  ResponseEntity<UserGetResponse> getAllFavorites(Authentication authentication) throws UserNotFound{
@@ -62,7 +45,7 @@ public class UserController {
 	}
 
 	@PostMapping("/users/favorites")
-	public ResponseEntity<?> createFavorite(Authentication authentication, @RequestBody ObjectNode objectNode) {
+	public ResponseEntity<?> createFavorite(Authentication authentication, @RequestBody ObjectNode objectNode) throws AlreadyIsAFavorite{
 
 		UserDAO userDetails = (UserDAO) authentication.getPrincipal();
 		Integer idSong = objectNode.get("idSong").asInt();
@@ -78,31 +61,7 @@ public class UserController {
 
 
 	//CONVERTS
-	//---------------------------------------
-	//	private UserGetResponse convertFromUserDTOToUserGetResponse(UserDTO userDTO) {
-	//
-	//		UserGetResponse response = new UserGetResponse(
-	//				userDTO.getIdUser(),
-	//				userDTO.getName(),
-	//				userDTO.getSurname(),
-	//				userDTO.getEmail(),
-	//				userDTO.getPassword()
-	//				);
-	//
-	//		return response;
-	//	}
 
-//
-//	private UserGetResponse convertFromDAOToGetResponse(UserDAO userDetails) {
-//		UserGetResponse response = new UserGetResponse(
-//				userDetails.getIdUser(),
-//				userDetails.getName(),
-//				userDetails.getSurname(),
-//				userDetails.getEmail(),
-//				userDetails.getPassword()
-//				);
-//		return response;
-//	}
 
 	private UserGetResponse convertFromUserDTOToUserGetResponseWithFavoriteList(UserDTO userDTO) {
 

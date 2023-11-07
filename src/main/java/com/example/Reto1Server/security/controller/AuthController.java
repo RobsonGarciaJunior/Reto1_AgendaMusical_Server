@@ -94,6 +94,15 @@ public class AuthController {
 		return new ResponseEntity<>(authService.updateUserPassword(userDTO, oldPassword),HttpStatus.NO_CONTENT);
 	}
 
+
+	@DeleteMapping("/users/me")
+	public ResponseEntity<?> deleteUser(Authentication authentication) {
+
+		UserDAO userDetails = (UserDAO) authentication.getPrincipal();
+
+		return new ResponseEntity<>(authService.deleteUser(userDetails.getIdUser()),HttpStatus.NO_CONTENT);
+	}
+
 	//CONVERTS
 	private UserDTO convertFromDAOToDTO(UserDAO userDetails) {
 
@@ -105,14 +114,6 @@ public class AuthController {
 				userDetails.getPassword()
 				);
 		return response;
-	}
-
-	@DeleteMapping("/users/me")
-	public ResponseEntity<?> deleteUser(Authentication authentication) {
-
-		UserDAO userDetails = (UserDAO) authentication.getPrincipal();
-
-		return new ResponseEntity<>(authService.deleteUser(userDetails.getIdUser()),HttpStatus.NO_CONTENT);
 	}
 
 }
