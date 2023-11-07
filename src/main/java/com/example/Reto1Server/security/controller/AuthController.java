@@ -56,7 +56,6 @@ public class AuthController {
 
 		} catch (BadCredentialsException ex) {
 			// esta excepción salta y estamos devolviendo un 401. se podria cambiar pero cuidado con lo que se devuelve al fallar el login etc
-			//AQUI NO SERIA UNA EXCEPCION NOT FOUND?
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
