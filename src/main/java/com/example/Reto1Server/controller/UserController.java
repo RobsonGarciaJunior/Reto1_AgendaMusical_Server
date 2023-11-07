@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Reto1Server.model.controller.song.SongGetResponse;
+import com.example.Reto1Server.model.controller.user.FavoritePostRequest;
 import com.example.Reto1Server.model.controller.user.UserGetResponse;
 import com.example.Reto1Server.model.service.SongDTO;
 import com.example.Reto1Server.model.service.UserDTO;
@@ -24,13 +25,13 @@ import com.example.Reto1Server.security.model.UserDAO;
 import com.example.Reto1Server.service.IUserService;
 import com.example.Reto1Server.utils.exception.user.AlreadyIsAFavorite;
 import com.example.Reto1Server.utils.exception.user.UserNotFound;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 @RestController
 @RequestMapping("api")
 public class UserController {
 
+	//TODO PREGUNTAR SI ES PROBLEMA AL BORRAR UNA FAVORITA SI LO PASO POR PARAMETRO
 	@Autowired
 	IUserService userService;
 
@@ -45,10 +46,10 @@ public class UserController {
 	}
 
 	@PostMapping("/users/favorites")
-	public ResponseEntity<?> createFavorite(Authentication authentication, @RequestBody ObjectNode objectNode) throws AlreadyIsAFavorite{
+	public ResponseEntity<?> createFavorite(Authentication authentication, @RequestBody FavoritePostRequest favoritePostRequest) throws AlreadyIsAFavorite{
 
 		UserDAO userDetails = (UserDAO) authentication.getPrincipal();
-		Integer idSong = objectNode.get("idSong").asInt();
+		Integer idSong = favoritePostRequest.getIdSong();
 
 		return new ResponseEntity<>(userService.createFavorite(userDetails.getIdUser(), idSong),HttpStatus.CREATED);
 	}
