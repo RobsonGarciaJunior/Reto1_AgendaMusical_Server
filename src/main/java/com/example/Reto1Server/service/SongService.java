@@ -14,7 +14,7 @@ import com.example.Reto1Server.utils.exception.song.UrlAlreadyExists;
 
 @Service
 public class SongService implements ISongService{
-	
+
 	@Autowired
 	SongRepositoryInterface songRepository;
 
@@ -73,7 +73,19 @@ public class SongService implements ISongService{
 		}
 		return response;
 	}
-
+	
+	@Override
+	public List<SongDTO> getSongByAuthor(String author) throws SongNotFound{
+		
+		List<Song> listFilteredSongs = songRepository.getSongByAuthor(author);
+		List<SongDTO> response = new ArrayList<SongDTO>();
+		
+		for(Song song : listFilteredSongs){
+			response.add(convertFromDAOToDTO(song));
+		}
+		return response;
+		
+	}
 	//CONVERTS
 	//---------------------------------------
 	private SongDTO convertFromDAOToDTO(Song song) {

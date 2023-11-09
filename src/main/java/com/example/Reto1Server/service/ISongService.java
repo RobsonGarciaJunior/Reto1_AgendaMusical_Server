@@ -14,4 +14,5 @@ public interface ISongService {
 	int updateSong(SongDTO song) throws UrlAlreadyExists;
 	int deleteSong(Integer id);
 	List<SongDTO> getFavoriteSongsByIdUser(Integer idUser);
+	List<SongDTO> getSongByAuthor(String author) throws SongNotFound;
 }

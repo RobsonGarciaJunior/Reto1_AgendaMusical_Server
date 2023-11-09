@@ -14,4 +14,5 @@ public interface SongRepositoryInterface {
 	int updateSong(Song song) throws UrlAlreadyExists;
 	int deleteSong(Integer id);
 	List<Song> getAllFavorites(Integer userId);
+	List<Song> getSongByAuthor(String author) throws SongNotFound;
 }
