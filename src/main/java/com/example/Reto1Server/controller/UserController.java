@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Reto1Server.model.controller.song.SongGetResponse;
 import com.example.Reto1Server.model.controller.user.FavoritePostRequest;
-import com.example.Reto1Server.model.controller.user.UserGetResponse;
 import com.example.Reto1Server.model.service.SongDTO;
-import com.example.Reto1Server.model.service.UserDTO;
 import com.example.Reto1Server.security.model.UserDAO;
 import com.example.Reto1Server.service.IUserService;
 import com.example.Reto1Server.utils.exception.user.AlreadyIsAFavorite;
@@ -31,18 +29,22 @@ import com.example.Reto1Server.utils.exception.user.UserNotFound;
 @RequestMapping("api")
 public class UserController {
 
-	//TODO PREGUNTAR SI ES PROBLEMA AL BORRAR UNA FAVORITA SI LO PASO POR PARAMETRO
 	@Autowired
 	IUserService userService;
 
 	@GetMapping("/users/me/favorites")
-	public  ResponseEntity<UserGetResponse> getAllFavorites(Authentication authentication) throws UserNotFound{
+	public  ResponseEntity<List<SongGetResponse>> getAllFavorites(Authentication authentication) throws UserNotFound{
 
 		UserDAO userDetails = (UserDAO) authentication.getPrincipal();
+		List<SongDTO> listSongDTO = userService.getAllFavorites(userDetails.getIdUser());
+		List<SongGetResponse> response = new ArrayList<SongGetResponse>(); 
 
-		UserGetResponse userGetResponse = convertFromUserDTOToUserGetResponseWithFavoriteList(userService.getUserWithAllFavorites(userDetails.getIdUser()));
+		//Transform every DTO from the list to GetResponse
+		for(SongDTO songDTO: listSongDTO) {
+			response.add(convertFromSongDTOToSongGetResponse(songDTO));
+		}
 
-		return new ResponseEntity<>(userGetResponse, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	}
 
 	@PostMapping("/users/favorites")
@@ -63,27 +65,6 @@ public class UserController {
 
 	//CONVERTS
 
-
-	private UserGetResponse convertFromUserDTOToUserGetResponseWithFavoriteList(UserDTO userDTO) {
-
-		List<SongGetResponse> listOfFavourites = new ArrayList<SongGetResponse>();
-
-		for(SongDTO songDTO: userDTO.getFavoriteList()) {
-			listOfFavourites.add(convertFromSongDTOToSongGetResponse(songDTO));
-		}
-
-		UserGetResponse response = new UserGetResponse(
-				userDTO.getIdUser(),
-				userDTO.getName(),
-				userDTO.getSurname(),
-				userDTO.getEmail(),
-				userDTO.getPassword()
-				);
-
-		response.setFavoriteList(listOfFavourites);
-		return response;
-	}
-
 	private SongGetResponse convertFromSongDTOToSongGetResponse(SongDTO songDTO) {
 
 		SongGetResponse response = new SongGetResponse(
@@ -95,6 +76,26 @@ public class UserController {
 
 		return response;
 	}
+	//
+	//	private UserGetResponse convertFromUserDTOToUserGetResponseWithFavoriteList(UserDTO userDTO) {
+	//
+	//		List<SongGetResponse> listOfFavourites = new ArrayList<SongGetResponse>();
+	//
+	//		for(SongDTO songDTO: userDTO.getFavoriteList()) {
+	//			listOfFavourites.add(convertFromSongDTOToSongGetResponse(songDTO));
+	//		}
+	//
+	//		UserGetResponse response = new UserGetResponse(
+	//				userDTO.getIdUser(),
+	//				userDTO.getName(),
+	//				userDTO.getSurname(),
+	//				userDTO.getEmail(),
+	//				userDTO.getPassword()
+	//				);
+	//
+	//		response.setFavoriteList(listOfFavourites);
+	//		return response;
+	//	}
 
 	//	private UserDTO convertFromPostRequestToDTO(UserPostRequest userPostRequest) {
 	//
