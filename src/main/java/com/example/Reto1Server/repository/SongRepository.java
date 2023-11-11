@@ -79,5 +79,15 @@ public class SongRepository implements SongRepositoryInterface{
 			return null;
 		}
 	}
+	@Override
+	public List<Song> getSongByAuthor(String author) throws SongNotFound {
+		try {
+			return jdbcTemplate.query(            "SELECT * FROM songs WHERE author LIKE CONCAT('%', ?, '%')",
+					BeanPropertyRowMapper.newInstance(Song.class), author);
+		}catch(EmptyResultDataAccessException erdae){
+			throw new SongNotFound("Song does not exist");
+		}
+
+	}
 
 }
