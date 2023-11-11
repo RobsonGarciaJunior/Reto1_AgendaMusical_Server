@@ -73,6 +73,19 @@ public class SongService implements ISongService{
 		}
 		return response;
 	}
+	
+	@Override
+	public List<SongDTO> getSongByAuthor(String author) throws SongNotFound{
+
+		List<Song> listFilteredSongs = songRepository.getSongByAuthor(author);
+		List<SongDTO> response = new ArrayList<SongDTO>();
+
+		for(Song song : listFilteredSongs){
+			response.add(convertFromDAOToDTO(song));
+		}
+		return response;
+
+	}
 
 	//CONVERTS
 	//---------------------------------------
