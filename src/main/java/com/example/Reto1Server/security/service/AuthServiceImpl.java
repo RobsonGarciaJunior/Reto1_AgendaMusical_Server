@@ -35,23 +35,19 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 	}
 
 	@Override
-	public int updateUserPassword(UserDTO userDTO, String oldPassword){
-		UserDAO userDAO = convertFromDTOToDAO(userDTO);
-		//Obtenemos la contrasenna actual de la BBDD
-		String password = authRepository.getActualDBPassword(userDAO.getIdUser());
+	public int updateUserPassword(UserDTO userDTO, String oldPassword) throws WrongPasswordIntroduced {
+	    UserDAO userDAO = convertFromDTOToDAO(userDTO);
+	    // Obtén la contraseña actual de la BBDD
+	    String actualDBPassword = authRepository.getActualDBPassword(userDAO.getIdUser());
 
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		//Comparamos la contrasenna de la BBDD con la nueva que ha introducido el usuario
-		try {
-			if(passwordEncoder.matches(oldPassword, password)){
-				//Actualizamos la contrasenna
-				return authRepository.updateUserPassword(userDAO);
-			}
-			//Lanzamos el error de que la contrasenna no coincide
-			throw new WrongPasswordIntroduced("Contrasenna no coincide");
-		}catch(WrongPasswordIntroduced wpie){
-			return 0;
-		}
+	    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	    // Comparamos la contraseña de la BBDD con la nueva que ha introducido el usuario
+	    if (passwordEncoder.matches(oldPassword, actualDBPassword)) {
+	        // Actualizamos la contraseña
+	        return authRepository.updateUserPassword(userDAO);
+	    }
+	    // Lanzamos el error de que la contraseña no coincide
+	    throw new WrongPasswordIntroduced("La contraseña antigua no coincide");
 	}
 
 	@Override
