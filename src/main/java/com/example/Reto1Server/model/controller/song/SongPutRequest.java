@@ -2,14 +2,14 @@ package com.example.Reto1Server.model.controller.song;
 
 public class SongPutRequest {
 
-	private int idSong;
+	private Integer idSong;
 	private String title;
 	private String author;
 	private String url;
 	
 	public SongPutRequest() {}
 	
-	public SongPutRequest(int idSong, String title, String author, String url) {
+	public SongPutRequest(Integer idSong, String title, String author, String url) {
 		super();
 		this.idSong = idSong;
 		this.title = title;
@@ -17,11 +17,11 @@ public class SongPutRequest {
 		this.url = url;
 	}
 
-	public int getIdSong() {
+	public Integer getIdSong() {
 		return idSong;
 	}
 
-	public void setIdSong(int idSong) {
+	public void setIdSong(Integer idSong) {
 		this.idSong = idSong;
 	}
 

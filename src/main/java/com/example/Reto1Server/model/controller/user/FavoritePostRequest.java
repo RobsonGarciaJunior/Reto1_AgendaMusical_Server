@@ -2,16 +2,18 @@ package com.example.Reto1Server.model.controller.user;
 
 public class FavoritePostRequest {
 
-	private int idSong;
+	private Integer idSong;
 	
-	FavoritePostRequest(){}
+	FavoritePostRequest(Integer idSong){
+		this.idSong = idSong;
+	}
 
 
-	public int getIdSong() {
+	public Integer getIdSong() {
 		return idSong;
 	}
 
-	public void setIdSong(int idSong) {
+	public void setIdSong(Integer idSong) {
 		this.idSong = idSong;
 	}
 
