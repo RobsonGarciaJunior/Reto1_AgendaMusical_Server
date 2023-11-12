@@ -77,6 +77,18 @@ public class SongController {
 
 		return new ResponseEntity<>(songService.deleteSong(id), HttpStatus.NO_CONTENT);
 	}
+	@GetMapping("/author/{author}")
+	public ResponseEntity<List<SongGetResponse>> getSongByAuthor(@PathVariable("author") String author) throws SongNotFound{
+
+		List<SongDTO> listSongDTO = songService.getSongByAuthor(author);
+		List<SongGetResponse> songGetResponse = new ArrayList<SongGetResponse>();
+
+		for(SongDTO songDTO: listSongDTO) {
+			songGetResponse.add(convertFromSongDTOToSongGetResponse(songDTO));
+		}
+
+		return new ResponseEntity<>(songGetResponse, HttpStatus.ACCEPTED);
+	}
 
 	//CONVERTS
 	//---------------------------------------
