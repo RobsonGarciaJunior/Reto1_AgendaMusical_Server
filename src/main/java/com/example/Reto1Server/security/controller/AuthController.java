@@ -22,6 +22,7 @@ import com.example.Reto1Server.security.model.AuthResponse;
 import com.example.Reto1Server.security.model.AuthUpdatePassword;
 import com.example.Reto1Server.security.model.UserDAO;
 import com.example.Reto1Server.security.service.AuthService;
+import com.example.Reto1Server.utils.exception.user.EmailAlreadyUsed;
 
 import jakarta.validation.Valid;
 
@@ -62,7 +63,7 @@ public class AuthController {
 
 
 	@PostMapping("/auth/signup")
-	public ResponseEntity<?> signIn(@RequestBody @Valid AuthRequest request) {
+	public ResponseEntity<?> signIn(@RequestBody @Valid AuthRequest request) throws EmailAlreadyUsed {
 		// TODO solo esta creado en el caso de que funcione. Si no es posible que de 500 o 401.
 		// aqui hacer lo que sea preciso
 

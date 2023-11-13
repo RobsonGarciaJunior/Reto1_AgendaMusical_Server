@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.Reto1Server.model.service.UserDTO;
 import com.example.Reto1Server.security.model.UserDAO;
 import com.example.Reto1Server.security.repository.AuthRepository;
+import com.example.Reto1Server.utils.exception.user.EmailAlreadyUsed;
 import com.example.Reto1Server.utils.exception.user.WrongPasswordIntroduced;
 
 
@@ -19,7 +20,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 	@Autowired
 	AuthRepository authRepository;
 
-	public int create(UserDTO userDTO) {
+	public int create(UserDTO userDTO) throws EmailAlreadyUsed {
 		UserDAO userDAO = convertFromDTOToDAO(userDTO);
 		return authRepository.create(userDAO);
 	}
