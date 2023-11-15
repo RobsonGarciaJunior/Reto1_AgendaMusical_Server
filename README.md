@@ -9,7 +9,9 @@ Un servidor API REST son capaces de enviar y recibir datos usando el método HTT
 
 
 # Descripción del proyecto
-	![alt text](https://github.com/RobsonGarciaJunior/Reto1_AgendaMusical_Server.git//blob/main/Reto1_BBDD_E-R-Diagrama E-R.png?raw=true)
+
+	![alt text](https://github.com/RobsonGarciaJunior/Reto1_AgendaMusical_Server.git/blob/main/Reto1_BBDD_E-R-Diagrama E-R.png?raw=true)
+	
 El usuario podrá:
 	Sin estar autenticado:
 		- Registrarse y/o iniciar sesión en la aplicación
