@@ -69,6 +69,7 @@ public class WebSecurityConfig {
 				//.requestMatchers("/api/songs/{id}").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/songs", "/api/songs/{id}").permitAll()
 				
+				.requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
 				// para todo lo demas habra que estar autenticado
 				.anyRequest().authenticated()
 			)
