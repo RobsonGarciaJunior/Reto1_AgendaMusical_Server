@@ -1,0 +1,180 @@
+
+DROP DATABASE IF EXISTS Reto1DB;
+CREATE DATABASE IF NOT EXISTS Reto1DB;
+USE Reto1DB;
+
+DROP USER IF EXISTS userReto1;
+CREATE USER IF NOT EXISTS userReto1
+IDENTIFIED BY "Elorrieta";
+GRANT ALL ON Reto1DB.* to userReto1;
+
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
+--
+-- Host: localhost    Database: reto1db
+-- ------------------------------------------------------
+-- Server version	8.0.22
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `idUser` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `surname` varchar(30) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  PRIMARY KEY (`idUser`),
+  UNIQUE KEY `email` (`email`),
+  CONSTRAINT `ch_emailFormat` CHECK ((`email` like _utf8mb4'%@%'))
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (9,'Jon','Gallego','jon@gmail.com','$2a$10$QFQ4w7fXMqnxfSQU2x.Tb.GDS4HRDt11EIeIgntcwlEL7t4GkVbNG'),(11,'Robson','Garcia Junior','r@r.r','$2a$10$lXePaYEy0NJAwcwH01bzBeeguZ7g0ZOGEt9...46BXuo2aOK8Vbem'),(13,'asd','asd','jon@gmail.coma','$2a$10$Go8O1jWFYbgDEy1lyihkmOQ5/BUWhpcc3FDkKvXTYzyOITUFiX87G');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-11-15 20:05:27
+
+
+
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
+--
+-- Host: localhost    Database: reto1db
+-- ------------------------------------------------------
+-- Server version	8.0.22
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `songs`
+--
+
+DROP TABLE IF EXISTS `songs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `songs` (
+  `idSong` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `author` varchar(50) NOT NULL,
+  `url` varchar(200) NOT NULL,
+  PRIMARY KEY (`idSong`),
+  UNIQUE KEY `url` (`url`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `songs`
+--
+
+LOCK TABLES `songs` WRITE;
+/*!40000 ALTER TABLE `songs` DISABLE KEYS */;
+INSERT INTO `songs` VALUES (1,'Without You','Avicii','https://youtu.be/WRz2MxhAdJo?si=VLgEiUcyMcJe2UZF'),(2,'Circles','Post Malone','https://youtu.be/dgz4M19uOi4?feature=shared'),(3,'Mourning','Post Malone','https://youtu.be/U2Ww0iPEet4?feature=shared'),(4,'T.N.T','ACDC','https://youtu.be/NhsK5WExrnE?feature=shared'),(5,'You Shook Me All Night Long','ACDC','https://youtu.be/SP9t2Iq_zQ8?feature=shared'),(6,'Numb','Linkin Park','https://youtu.be/dxp9w9Ggehc?feature=shared'),(7,'Better Now','Post Malone','https://youtu.be/UYwF-jdcVjY?feature=shared'),(8,'I Fall Apart','Post Malone','https://youtu.be/gk0nB9vvYfU?feature=shared'),(9,'Sunflower','Post Malone','https://youtu.be/r7Rn4ryE_w8?feature=shared'),(10,'Chemical','Post Malone','https://youtu.be/IzPQ_jA00bk?feature=shared'),(11,'In The End','Linkin Park','https://youtu.be/eVTXPUF4Oz4?feature=shared'),(12,'Lost','Linkin Park','https://youtu.be/7NK_JOkuSVY?feature=shared'),(13,'Breaking The Habit','Linkin Park','https://youtu.be/v2H4l9RpkwM?feature=shared'),(14,'Wake Me Up','Avicii','https://youtu.be/IcrbM1l_BoI?feature=shared'),(15,'Levels','Avicii','https://youtu.be/_ovdm2yX4MA?feature=shared'),(16,'Waiting For Love','Avicii','https://youtu.be/cHHLHGNpCSA?feature=shared'),(17,'Hey Brother','Avicii','https://youtu.be/6Cp6mKbRTQY?feature=shared'),(18,'Thunderstruck ','ACDC','https://youtu.be/v2AC41dglnM?feature=shared'),(19,'Back In Black ','ACDC','https://youtu.be/pAgnJDJN4VA?feature=shared'),(20,'Highway to Hell','ACDC','https://youtu.be/l482T0yNkeo?feature=shared');
+/*!40000 ALTER TABLE `songs` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-11-15 20:05:27
+
+
+
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
+--
+-- Host: localhost    Database: reto1db
+-- ------------------------------------------------------
+-- Server version	8.0.22
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `favorites`
+--
+
+DROP TABLE IF EXISTS `favorites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `favorites` (
+  `idUser` int NOT NULL,
+  `idSong` int NOT NULL,
+  PRIMARY KEY (`idUser`,`idSong`),
+  KEY `fk_idSong_Song` (`idSong`),
+  CONSTRAINT `fk_idSong_Song` FOREIGN KEY (`idSong`) REFERENCES `songs` (`idSong`),
+  CONSTRAINT `fk_idUser_User` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `favorites`
+--
+
+LOCK TABLES `favorites` WRITE;
+/*!40000 ALTER TABLE `favorites` DISABLE KEYS */;
+INSERT INTO `favorites` VALUES (9,8),(11,8),(9,9),(11,9);
+/*!40000 ALTER TABLE `favorites` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-11-15 20:05:27
