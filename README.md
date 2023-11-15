@@ -9,15 +9,18 @@ Un servidor API REST son capaces de enviar y recibir datos usando el método HTT
 
 
 # Descripción del proyecto
+Diagrama E-R
 
-	![Screenshot](Reto1_BBDD_E-R-Diagrama E-R.png)
+![Screenshot](Reto1_BBDD_E-R-Diagrama E-R.png)
 	
 El usuario podrá:
-	- Sin estar autenticado:
-		- Registrarse y/o iniciar sesión en la aplicación
-	- Una vez autenticado:	
-		- Visualizar todas las listas de canciones disponibles en la aplicación
+- Sin estar autenticado:
+	- Registrarse y/o iniciar sesión en la aplicación
+- Una vez autenticado:	
+	- Visualizar todas las listas de canciones disponibles en la aplicación
+
 		- Crear una lista con canciones favoritas
+
 		- Cambiar su contraseña a una nueva
 
 # Built With (construido con)
