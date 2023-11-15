@@ -11,7 +11,7 @@ Un servidor API REST son capaces de enviar y recibir datos usando el método HTT
 # Descripción del proyecto
 Diagrama E-R
 
-![Screenshot](Reto1_BBDD_E-R-Diagrama E-R.png)
+![Screenshot](Reto1_BBDD_E-R-Diagrama_E-R.png)
 	
 El usuario podrá:
 - Sin estar autenticado:
