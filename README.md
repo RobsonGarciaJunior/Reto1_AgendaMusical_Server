@@ -13,9 +13,9 @@ Un servidor API REST son capaces de enviar y recibir datos usando el método HTT
 	![alt text](https://github.com/RobsonGarciaJunior/Reto1_AgendaMusical_Server.git/blob/main/Reto1_BBDD_E-R-Diagrama E-R.png?raw=true)
 	
 El usuario podrá:
-	Sin estar autenticado:
+	-Sin estar autenticado:
 		- Registrarse y/o iniciar sesión en la aplicación
-	Una vez autenticado:	
+	-Una vez autenticado:	
 		- Visualizar todas las listas de canciones disponibles en la aplicación
 		- Crear una lista con canciones favoritas
 		- Cambiar su contraseña a una nueva
