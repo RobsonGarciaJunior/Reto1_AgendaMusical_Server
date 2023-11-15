@@ -3,12 +3,14 @@ package com.example.Reto1Server.security.repository;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.example.Reto1Server.security.model.UserDAO;
+import com.example.Reto1Server.utils.exception.user.EmailAlreadyUsed;
 
 @Repository
 public class AuthRepositoryImpl implements AuthRepository {
@@ -28,15 +30,21 @@ public class AuthRepositoryImpl implements AuthRepository {
 	}
 
 	@Override
-	public int create(UserDAO user) {
+	public int create(UserDAO user) throws EmailAlreadyUsed {
 		// IMPORTANTE: la contrasenia ha tenido que ser cifrada antes de entrar aqui
 
-		// TODO podria darnos excepcion por que el email es unico		
-		return jdbcTemplate.update("INSERT INTO users (name, surname, email, password) VALUES(?, ?, ?, ?)",
-				new Object[] { 
-						user.getName(), user.getSurname(), user.getEmail(), user.getPassword() // debe estar cifrada de antemano
-		}	
-				);
+		// TODO podria darnos excepcion por que el email es unico	
+		try {
+			return jdbcTemplate.update("INSERT INTO users (name, surname, email, password) VALUES(?, ?, ?, ?)",
+					new Object[] { 
+							user.getName(), user.getSurname(), user.getEmail(), user.getPassword() // debe estar cifrada de antemano
+			}	
+					);
+
+		} catch (DataIntegrityViolationException e) {
+			throw new EmailAlreadyUsed("Email Already Used");
+		}
+
 	}
 
 
