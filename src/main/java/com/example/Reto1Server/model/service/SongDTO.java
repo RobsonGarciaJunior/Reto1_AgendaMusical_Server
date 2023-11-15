@@ -2,12 +2,12 @@ package com.example.Reto1Server.model.service;
 
 public class SongDTO {
 	
-	private int idSong;
+	private Integer idSong;
 	private String title;
 	private String author;
 	private String url;
 	
-	public SongDTO(int idSong, String title, String author, String url) {
+	public SongDTO(Integer idSong, String title, String author, String url) {
 		super();
 		this.idSong = idSong;
 		this.title = title;
@@ -15,11 +15,11 @@ public class SongDTO {
 		this.url = url;
 	}
 
-	public int getIdSong() {
+	public Integer getIdSong() {
 		return idSong;
 	}
 
-	public void setIdSong(int idSong) {
+	public void setIdSong(Integer idSong) {
 		this.idSong = idSong;
 	}
 

@@ -23,6 +23,7 @@ import com.example.Reto1Server.security.model.AuthUpdatePassword;
 import com.example.Reto1Server.security.model.UserDAO;
 import com.example.Reto1Server.security.service.AuthService;
 import com.example.Reto1Server.utils.exception.user.EmailAlreadyUsed;
+import com.example.Reto1Server.utils.exception.user.WrongPasswordIntroduced;
 
 import jakarta.validation.Valid;
 
@@ -79,7 +80,7 @@ public class AuthController {
 
 	//	TODO ACTUALIZAR CONTRASENNA
 	@PutMapping("users/me")
-	public ResponseEntity<?> updateUserPassword(Authentication authentication, @RequestBody AuthUpdatePassword authUpdatePassword){
+	public ResponseEntity<?> updateUserPassword(Authentication authentication, @RequestBody AuthUpdatePassword authUpdatePassword) throws WrongPasswordIntroduced{
 
 		UserDAO userDetails = (UserDAO) authentication.getPrincipal();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

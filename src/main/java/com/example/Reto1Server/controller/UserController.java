@@ -51,7 +51,7 @@ public class UserController {
 	public ResponseEntity<?> createFavorite(Authentication authentication, @RequestBody FavoritePostRequest favoritePostRequest) throws AlreadyIsAFavorite{
 
 		UserDAO userDetails = (UserDAO) authentication.getPrincipal();
-		Integer idSong = favoritePostRequest.getIdSong();
+		Integer idSong = (Integer) favoritePostRequest.getIdSong();
 
 		return new ResponseEntity<>(userService.createFavorite(userDetails.getIdUser(), idSong),HttpStatus.CREATED);
 	}
